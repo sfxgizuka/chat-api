@@ -2,6 +2,7 @@ import { Request, Response, NextFunction} from 'express'
 import AppDataSource from '../database/database';
 import User from '../entities/user.entity';
 import { Post } from '../entities/post.entity';
+import { SelectQueryBuilder } from 'typeorm';
 
 export const makePost = async(req:Request, res: Response)=>{
    try{
@@ -34,4 +35,12 @@ export const makePost = async(req:Request, res: Response)=>{
             message: err.message
         })
    }
+}
+
+export const getMostPostMakers = async(req:Request, res: Response)=>{
+    const postRepository = AppDataSource.getRepository(User);
+    const queryBuilder: SelectQueryBuilder<User> = postRepository.createQueryBuilder('users')
+    .select(['users.id', 'users.name', 'posts.title', 'comments.content'])
+    .leftJoin(Post, 'posts', 'users.id = posts.userId')
+    .leftJoin(Comment, 'comments', 'posts.id = comments.postId')
 }

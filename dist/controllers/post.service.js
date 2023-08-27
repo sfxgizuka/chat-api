@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makePost = void 0;
+exports.getMostPostMakers = exports.makePost = void 0;
 const database_1 = __importDefault(require("../database/database"));
 const user_entity_1 = __importDefault(require("../entities/user.entity"));
 const post_entity_1 = require("../entities/post.entity");
@@ -47,3 +47,11 @@ const makePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.makePost = makePost;
+const getMostPostMakers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const postRepository = database_1.default.getRepository(user_entity_1.default);
+    const queryBuilder = postRepository.createQueryBuilder('users')
+        .select(['users.id', 'users.name', 'posts.title', 'comments.content'])
+        .leftJoin(post_entity_1.Post, 'posts', 'users.id = posts.userId')
+        .leftJoin(Comment, 'comments', 'posts.id = comments.postId');
+});
+exports.getMostPostMakers = getMostPostMakers;

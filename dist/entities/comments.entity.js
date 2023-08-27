@@ -12,8 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Comments = void 0;
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
-let Comments = exports.Comments = class Comments {
+let Comments = class Comments {
 };
+exports.Comments = Comments;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
@@ -26,6 +27,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => post_entity_1.Post, (post) => post.comment),
     __metadata("design:type", post_entity_1.Post)
 ], Comments.prototype, "post", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Comments.prototype, "createdAt", void 0);
 exports.Comments = Comments = __decorate([
     (0, typeorm_1.Entity)()
 ], Comments);

@@ -16,8 +16,9 @@ exports.Post = void 0;
 const typeorm_1 = require("typeorm");
 const comments_entity_1 = require("./comments.entity");
 const user_entity_1 = __importDefault(require("./user.entity"));
-let Post = exports.Post = class Post {
+let Post = class Post {
 };
+exports.Post = Post;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
@@ -38,6 +39,10 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.default, (user) => user.post),
     __metadata("design:type", user_entity_1.default)
 ], Post.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Post.prototype, "createdAt", void 0);
 exports.Post = Post = __decorate([
     (0, typeorm_1.Entity)()
 ], Post);
