@@ -1,5 +1,6 @@
 import express, { Request, Response} from 'express';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser'
 import dotenv from "dotenv";
 import userRoutes from './routes/user'
 import commentRoute from './routes/comment'
@@ -9,7 +10,8 @@ dotenv.config();
 
 const port = 3000;
 
-app.use(express.json());
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
