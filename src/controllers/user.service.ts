@@ -5,11 +5,11 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 import { encryptor, tokenGen } from '../helpers/utility';
 import { UserDto } from '../dto/user.dto';
+import { userSchema } from '../schemas/user.schema';
 
 export const signUp = async(req:Request, res: Response) =>{
     try {
         const { username, email, password } = req.body;
-        // const userRepository = getRepository(User);
         const userRepo = AppDataSource.getRepository(User)
         // Create a new user entity
         const newUser = new User();
@@ -66,7 +66,6 @@ export const login = async(req:Request, res: Response) => {
   }
 
   export const getUsers = async(req:Request, res:Response)=>{
-    console.log('reached')
     const userRepository = AppDataSource.getRepository(User);
     let users  = await userRepository.find();
     let usersWithoutPassword = users.map(user =>{

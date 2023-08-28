@@ -32,7 +32,6 @@ const utility_1 = require("../helpers/utility");
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, email, password } = req.body;
-        // const userRepository = getRepository(User);
         const userRepo = database_1.default.getRepository(user_entity_1.default);
         // Create a new user entity
         const newUser = new user_entity_1.default();
@@ -87,7 +86,6 @@ const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.auth = auth;
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('reached');
     const userRepository = database_1.default.getRepository(user_entity_1.default);
     let users = yield userRepository.find();
     let usersWithoutPassword = users.map(user => {
