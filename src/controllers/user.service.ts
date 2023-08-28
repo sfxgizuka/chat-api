@@ -11,6 +11,14 @@ export const signUp = async(req:Request, res: Response) =>{
     try {
         const { username, email, password } = req.body;
         const userRepo = AppDataSource.getRepository(User)
+        const user = await userRepo.findOne( { where: { email } } )
+        if(user){
+          return res.status(400).json({
+            status: 'error',
+            message: 'user with email already exist'
+          })
+        }
+        
         // Create a new user entity
         const newUser = new User();
         newUser.username = username;
@@ -19,7 +27,7 @@ export const signUp = async(req:Request, res: Response) =>{
     
         // Save the user entity to the database
         const savedUser = await userRepo.save(newUser);
-    
+        delete savedUser.password;
         res.status(201).json(savedUser);
       } catch (error) {
         console.error('Error creating user:', error);

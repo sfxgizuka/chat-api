@@ -33,6 +33,13 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, email, password } = req.body;
         const userRepo = database_1.default.getRepository(user_entity_1.default);
+        const user = yield userRepo.findOne({ where: { email } });
+        if (user) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'user with email already exist'
+            });
+        }
         // Create a new user entity
         const newUser = new user_entity_1.default();
         newUser.username = username;
@@ -40,6 +47,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         newUser.password = yield (0, utility_1.encryptor)(password);
         // Save the user entity to the database
         const savedUser = yield userRepo.save(newUser);
+        delete savedUser.password;
         res.status(201).json(savedUser);
     }
     catch (error) {
