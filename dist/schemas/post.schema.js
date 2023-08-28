@@ -7,5 +7,5 @@ exports.postSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.postSchema = joi_1.default.object({
     title: joi_1.default.string().min(3).max(30).required(),
-    messgae: joi_1.default.string().min(3).max(30).required(),
+    message: joi_1.default.string().min(3).max(30).required(),
 });
