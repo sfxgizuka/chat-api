@@ -16,9 +16,8 @@ exports.Post = void 0;
 const typeorm_1 = require("typeorm");
 const comments_entity_1 = require("./comments.entity");
 const user_entity_1 = __importDefault(require("./user.entity"));
-let Post = class Post {
+let Post = exports.Post = class Post {
 };
-exports.Post = Post;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)

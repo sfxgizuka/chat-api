@@ -12,9 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Comments = void 0;
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
-let Comments = class Comments {
+let Comments = exports.Comments = class Comments {
 };
-exports.Comments = Comments;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)

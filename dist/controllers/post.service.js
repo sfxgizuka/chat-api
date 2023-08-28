@@ -48,10 +48,23 @@ const makePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.makePost = makePost;
 const getMostPostMakers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const postRepository = database_1.default.getRepository(user_entity_1.default);
-    const queryBuilder = postRepository.createQueryBuilder('users')
-        .select(['users.id', 'users.name', 'posts.title', 'comments.content'])
-        .leftJoin(post_entity_1.Post, 'posts', 'users.id = posts.userId')
-        .leftJoin(Comment, 'comments', 'posts.id = comments.postId');
+    try {
+        const postRepository = database_1.default.getRepository(user_entity_1.default);
+        const queryBuilder = postRepository.createQueryBuilder('users')
+            .leftJoinAndSelect('users.post', 'posts')
+            .leftJoinAndSelect('posts.comment', 'comments')
+            .select(['users.pk as pk', 'users.username as name', 'posts.title as title', 'comments.content as content'])
+            .where('comments."createdAt" = (SELECT MAX("createdAt") FROM comments WHERE comments."postPk" = posts."pk")')
+            .orderBy('(SELECT COUNT(post."pk") FROM post WHERE post."userPk" = users."pk")', 'DESC')
+            .limit(3);
+        const result = yield queryBuilder.getRawMany();
+        res.json(result);
+    }
+    catch (error) {
+        res.status(400).json({
+            status: 'error',
+            message: error.message
+        });
+    }
 });
 exports.getMostPostMakers = getMostPostMakers;

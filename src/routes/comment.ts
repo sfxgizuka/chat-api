@@ -1,15 +1,16 @@
 import { Router } from 'express'
 import { makeComment } from '../controllers/comments.service'
 import { auth } from '../controllers/user.service'
+import { getMostPostMakers } from '../controllers/post.service'
 
 const router = Router()
 
 
-
 //comment to a post
-router.post('/:postId/comments',auth, makeComment)
+router.post('/:postId/comments', auth, makeComment)
 
-//fetch top 3 posters
-router.get('top')
+//fetch top 3 poster's
+router.get('/highest', auth, getMostPostMakers)
+
 
 export default router

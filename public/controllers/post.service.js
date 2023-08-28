@@ -51,7 +51,13 @@ const getMostPostMakers = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const postRepository = database_1.default.getRepository(user_entity_1.default);
     const queryBuilder = postRepository.createQueryBuilder('users')
         .select(['users.id', 'users.name', 'posts.title', 'comments.content'])
-        .leftJoin(post_entity_1.Post, 'posts', 'users.id = posts.userId')
-        .leftJoin(Comment, 'comments', 'posts.id = comments.postId');
+        .leftJoin(post_entity_1.Post, 'posts', 'users.pk = posts.userId')
+        .leftJoin(Comment, 'comments', 'posts.pk = comments.postId')
+        .where('comments.createdAt = (SELECT MAX(createdAt) FROM comments WHERE postId = posts.pk)')
+        .orderBy(`(SELECT COUNT(posts.id) FROM posts WHERE posts.userId = users.pk)`, 'DESC')
+        .limit(3);
+    const result = yield queryBuilder.getRawMany();
+    console.log(result);
+    res.json(result);
 });
 exports.getMostPostMakers = getMostPostMakers;
